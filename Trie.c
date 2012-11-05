@@ -46,17 +46,22 @@ Trie *TrieScanWordList()
    return root;
 }
 
-void readCode(Trie *node) {
+void readCode(Trie *node)
+{
    char letter, childCount;
    int i;
+   
    scanf("%c%c", &letter, &childCount);
    childCount -= '@';
+   
    if (isupper(letter)) {
       node->terminates = 1;
       letter = tolower(letter);
    }
+   
    node->letter = letter;
    node->childCount = childCount;
+   
    if (childCount)
       node->children = calloc(sizeof(Trie), childCount);
    
@@ -75,6 +80,7 @@ void printString(Trie *node, char *prefix)
 {
    int prefixLen = strlen(prefix), i;
    char *fragment = malloc(prefixLen + 2);
+   
    strcpy(fragment, prefix);
    fragment[prefixLen] = node->letter;
    fragment[prefixLen + 1] = '\0';
@@ -97,9 +103,12 @@ void *TriePrintWordCode(Trie *trie)
 {
    int i;
    char letter = trie->letter;
+   
    if (trie->terminates)
       letter = toupper(letter);
+   
    printf("%c%c", letter, '@' + trie->childCount);
+   
    for (i = 0; i < trie->childCount; i++)
       TriePrintWordCode(trie->children + i);
 }
