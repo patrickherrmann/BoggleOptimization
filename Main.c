@@ -1,18 +1,20 @@
 #include <stdio.h>
-#include "Trie.h"
-#include "WordHashTable.h"
+#include <stdlib.h>
+#include "Board.h"
 
 int main()
 {
-   int x = 5, y = 10;
-   WordHashTable *wht = WordHashTableInit(20);
-   WordHashTableAdd(wht, &x);
-   WordHashTableAdd(wht, &y);
-   WordHashTableAdd(wht, &x);
-   printf("%d\n", WordHashTableSize(wht));
-   WordHashTableClear(wht);
-   WordHashTableAdd(wht, &y);
-   WordHashTableAdd(wht, &y);
-   printf("%d\n", WordHashTableSize(wht));
-   WordHashTableDestroy(wht);
+   Trie *trie = TrieScanWordCode();
+   BoardSolver *bs = BoardSolverInit(trie);
+   Board *board;
+   
+   srand(time(NULL));
+   
+   board = BoardRandom(bs);
+   
+   printf("Word count: %d\n", BoardWordCount(board));
+   
+   TrieDestroy(trie);
+   
+   return 0;
 }

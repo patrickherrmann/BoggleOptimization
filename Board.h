@@ -1,14 +1,24 @@
+#include "Trie.h"
+
 #define ROWS 4
 #define COLS 4
 
 typedef struct Board Board;
 
-Board *BoardRandom();
+typedef struct BoardSolver BoardSolver;
 
-Board *BoardScan();
+BoardSolver *BoardSolverInit(Trie *trie);
 
-Board *BoardFromLetters(char *letters);
+void BoardSolverDestroy(BoardSolver *bs);
+
+Board *BoardRandom(BoardSolver *bs);
+
+Board *BoardScan(BoardSolver *bs);
+
+Board *BoardFromLetters(BoardSolver *bs, char *letters);
 
 void BoardPrint(Board *board);
+
+int BoardWordCount(Board *board);
 
 int BoardScore(Board *board);

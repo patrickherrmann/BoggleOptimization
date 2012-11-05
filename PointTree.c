@@ -58,6 +58,7 @@ void PointTreeDestroy(PointTree *tree)
    PointTree *temp;
    
    PointTreeRecycle(tree);
+   
    while (freeNodes) {
       temp = freeNodes->sib;
       free(freeNodes);

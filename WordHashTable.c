@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "WordHashTable.h"
 
 struct WordHashTable {
@@ -34,11 +33,12 @@ static int nextPrime(int n)
 WordHashTable *WordHashTableInit(int capacity)
 {
    WordHashTable *wht = malloc(sizeof(wht));
+   
    wht->capacity = capacity;
    wht->size = 0;
    wht->allocated = nextPrime(capacity * 2);
    wht->entries = calloc(sizeof(void *), wht->allocated);
-   printf("Allocation: %d\n", wht->allocated);
+   
    return wht;
 }
 
