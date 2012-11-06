@@ -1,1 +1,1 @@
-Rewriting my previous c boggle efforts using C OO principles, improved algorithm, and more optimized memory management.
+[See the wiki](https://github.com/patrickherrmann/c-boggle3/wiki).
