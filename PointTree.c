@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "PointTree.h"
 
 struct PointTree {
@@ -57,8 +58,6 @@ void PointTreeDestroy(PointTree *tree)
 {
    PointTree *temp;
    
-   PointTreeRecycle(tree);
-   
    while (freeNodes) {
       temp = freeNodes->sib;
       free(freeNodes);
@@ -68,10 +67,11 @@ void PointTreeDestroy(PointTree *tree)
 
 void PointTreeAdd(PointTree **tree, int row, int col)
 {
-   PointTree *new = calloc(sizeof(PointTree), 1), *child;
+   PointTree *new = newNode(), *child;
    
    new->parent = *tree;
    new->child = NULL;
+   new->sib = NULL;
    new->row = row;
    new->col = col;
    
@@ -89,6 +89,7 @@ void PointTreeAdd(PointTree **tree, int row, int col)
 int PointTreePathContains(PointTree *tree, int row, int col)
 {
    int found = 0;
+   
    while (!found && tree) {
       if (tree->row == row && tree->col == col)
          found = 1;

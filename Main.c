@@ -5,18 +5,17 @@
 int main()
 {
    Trie *trie = TrieScanWordCode(&WordScore);
-   BoardSolver *bs = BoardSolverInit(trie, 1500);
+   BoardSolver *bs = BoardSolverInit(trie, 2000);
    Board *board;
+   int i;
    
    srand(time(NULL));
    
-   board = BoardRandom(bs);
-   
-   BoardPrint(board);
-   
-   printf("Word count: %d\n", BoardWordCount(board));
+   for (i = 0; i < 13000; i++)
+      board = BoardRandom(bs);
    
    TrieDestroy(trie);
+   BoardSolverDestroy(bs);
    
    return 0;
 }

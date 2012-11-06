@@ -14,8 +14,6 @@ struct BoardSolver {
    Trie *node;
    WordHashTable *found;
    PointTree *visited;
-   int row;
-   int col;
 };
 
 int WordScore(int wordLength) {
@@ -32,10 +30,55 @@ int WordScore(int wordLength) {
    }
 }
 
-void solveBoard(Board *b, BoardSolver bs)
+void considerNode(Board *b, BoardSolver bs, int row, int col)
 {
-   b->score = 99;
-   b->wordCount = 42;
+   Trie *child;
+   
+   if (PointTreePathContains(bs.visited, row, col)) return;
+   
+   child = TrieGetChild(bs.node, b->letters[row][col]);
+   
+   
+   if (child) {
+      if (child->terminates && !WordHashTableContains(bs.found, child)) {
+         b->score += child->score;
+         b->wordCount++;
+      }
+      bs.node = child;
+      PointTreeAdd(&bs.visited, row, col);
+      
+      if (row > 0) {
+         if (col > 0)
+            considerNode(b, bs, row - 1, col - 1);
+         if (col < COLS - 1)
+            considerNode(b, bs, row - 1, col + 1);
+         considerNode(b, bs, row - 1, col);
+      }
+      if (row < ROWS - 1) {
+         if (col > 0)
+            considerNode(b, bs, row + 1, col - 1);
+         if (col < COLS - 1)
+            considerNode(b, bs, row + 1, col + 1);
+         considerNode(b, bs, row + 1, col);
+      }
+      if (col > 0)
+         considerNode(b, bs, row, col - 1);
+      if (col < COLS - 1)
+         considerNode(b, bs, row, col + 1);
+   }
+}
+
+void solveBoard(Board *b, BoardSolver *bs)
+{
+   int row, col;
+   
+   for (row = 0; row < ROWS; row++)
+      for (col = 0; col < COLS; col++)
+         considerNode(b, *bs, row, col);
+   
+   PointTreeRecycle(bs->visited);
+   bs->visited = PointTreeInit();
+   WordHashTableClear(bs->found);
 }
 
 BoardSolver *BoardSolverInit(Trie *trie, int wordCapacity)
@@ -83,7 +126,8 @@ Board *BoardFromLetters(BoardSolver *bs, char *letters)
       for (col = 0; col < COLS; col++)
          b->letters[row][col] = letters[row * COLS + col];
    
-   solveBoard(b, *bs);
+   solveBoard(b, bs);
+   return b;
 }
 
 void BoardPrint(Board *board)
