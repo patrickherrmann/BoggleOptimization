@@ -8,10 +8,12 @@ typedef struct Trie {
 
 Trie *TrieScanWordList();
 
-Trie *TrieScanWordCode();
+Trie *TrieScanWordCode(int WordScore(int wordLength));
 
 void *TriePrintWordList(Trie *trie);
 
 void *TriePrintWordCode(Trie *trie);
 
 void TrieDestroy(Trie *trie);
+
+Trie *TrieGetChild(Trie *trie, char letter);

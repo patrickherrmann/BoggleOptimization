@@ -50,7 +50,7 @@ void WordHashTableDestroy(WordHashTable *wht)
 
 int findPosition(int allocated, void *data)
 {
-   int pos = ((int) data) % allocated;
+   int pos = (long) data % allocated;
    
    if (pos < 0)
       pos += allocated;

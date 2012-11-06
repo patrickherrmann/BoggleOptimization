@@ -18,18 +18,32 @@ struct BoardSolver {
    int col;
 };
 
-void solveBoard(Board *b, BoardSolver *bs)
+int WordScore(int wordLength) {
+   switch (wordLength) {
+      case 0:
+      case 1:
+      case 2: return 0;
+      case 3: 
+      case 4: return 1;
+      case 5: return 2;
+      case 6: return 3;
+      case 7: return 5;
+      default: return 11;
+   }
+}
+
+void solveBoard(Board *b, BoardSolver bs)
 {
    b->score = 99;
    b->wordCount = 42;
 }
 
-BoardSolver *BoardSolverInit(Trie *trie)
+BoardSolver *BoardSolverInit(Trie *trie, int wordCapacity)
 {
    BoardSolver *bs = malloc(sizeof(BoardSolver));
    
    bs->node = trie;
-   bs->found = WordHashTableInit(1500);
+   bs->found = WordHashTableInit(wordCapacity);
    bs->visited = PointTreeInit();
    
    return bs;
@@ -69,7 +83,7 @@ Board *BoardFromLetters(BoardSolver *bs, char *letters)
       for (col = 0; col < COLS; col++)
          b->letters[row][col] = letters[row * COLS + col];
    
-   solveBoard(b, bs);
+   solveBoard(b, *bs);
 }
 
 void BoardPrint(Board *board)

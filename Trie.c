@@ -46,7 +46,7 @@ Trie *TrieScanWordList()
    return root;
 }
 
-void readCode(Trie *node)
+void readCode(Trie *node, int level, int (*wordScore)(int))
 {
    char letter, childCount;
    int i;
@@ -59,6 +59,7 @@ void readCode(Trie *node)
       letter = tolower(letter);
    }
    
+   node->score = wordScore(level);
    node->letter = letter;
    node->childCount = childCount;
    
@@ -66,13 +67,13 @@ void readCode(Trie *node)
       node->children = calloc(sizeof(Trie), childCount);
    
    for (i = 0; i < childCount; i++)
-      readCode(node->children + i);
+      readCode(node->children + i, level + 1, wordScore);
 }
 
-Trie *TrieScanWordCode()
+Trie *TrieScanWordCode(int (*wordScore)(int))
 {
    Trie *root = calloc(sizeof(Trie), 1);
-   readCode(root);
+   readCode(root, 0, wordScore);
    return root;
 }
 
@@ -127,4 +128,26 @@ void TrieDestroy(Trie *trie)
 {
    destroyNode(trie);
    free(trie);
+}
+
+Trie *TrieGetChild(Trie *trie, char letter)
+{
+   int min, max, mid;
+   char childLetter;
+   
+   min = 0;
+   max = trie->childCount - 1;
+   
+   while (max >= min) {
+      mid = (min + max) / 2;
+      childLetter = trie->children[mid].letter;
+      if (childLetter < letter)
+         min = mid + 1;
+      else if (childLetter > letter)
+         max = mid - 1;
+      else
+         return trie->children + mid;
+   }
+   
+   return NULL;
 }
