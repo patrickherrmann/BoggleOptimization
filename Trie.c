@@ -95,12 +95,12 @@ void printString(Trie *node, char *prefix)
    free(fragment);
 }
 
-void *TriePrintWordList(Trie *trie)
+void TriePrintWordList(Trie *trie)
 {
    printString(trie, "");
 }
 
-void *TriePrintWordCode(Trie *trie)
+void TriePrintWordCode(Trie *trie)
 {
    int i;
    char letter = trie->letter;
@@ -112,6 +112,8 @@ void *TriePrintWordCode(Trie *trie)
    
    for (i = 0; i < trie->childCount; i++)
       TriePrintWordCode(trie->children + i);
+   
+   
 }
 
 void destroyNode(Trie *node)

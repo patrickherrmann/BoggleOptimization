@@ -10,9 +10,9 @@ Trie *TrieScanWordList();
 
 Trie *TrieScanWordCode(int WordScore(int wordLength));
 
-void *TriePrintWordList(Trie *trie);
+void TriePrintWordList(Trie *trie);
 
-void *TriePrintWordCode(Trie *trie);
+void TriePrintWordCode(Trie *trie);
 
 void TrieDestroy(Trie *trie);
 

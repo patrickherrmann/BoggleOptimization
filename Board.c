@@ -43,6 +43,7 @@ void considerNode(Board *b, BoardSolver bs, int row, int col)
       if (child->terminates && !WordHashTableContains(bs.found, child)) {
          b->score += child->score;
          b->wordCount++;
+         WordHashTableAdd(bs.found, child);
       }
       bs.node = child;
       PointTreeAdd(&bs.visited, row, col);

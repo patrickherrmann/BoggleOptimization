@@ -11,8 +11,9 @@ int main()
    
    srand(time(NULL));
    
-   for (i = 0; i < 13000; i++)
+   for (i = 0; i < 1000000; i++) {
       board = BoardRandom(bs);
+   }
    
    TrieDestroy(trie);
    BoardSolverDestroy(bs);
