@@ -5,7 +5,7 @@
 int main()
 {
    Trie *trie = TrieScanWordCode(&WordScore);
-   BoardSolver *bs = BoardSolverInit(trie, 2000);
+   BoardSolver *bs = BoardSolverInit(trie);
    Board *board;
    int i;
    

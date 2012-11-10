@@ -9,7 +9,7 @@ typedef struct BoardSolver BoardSolver;
 
 int WordScore(int wordLength);
 
-BoardSolver *BoardSolverInit(Trie *trie, int wordCapacity);
+BoardSolver *BoardSolverInit(Trie *trie);
 
 void BoardSolverDestroy(BoardSolver *bs);
 

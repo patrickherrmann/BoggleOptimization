@@ -1,18 +1,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Board.h"
-#include "WordHashTable.h"
 #include "PointTree.h"
 
 struct Board {
    char letters[ROWS][COLS];
    int wordCount;
    int score;
+   unsigned int id;
 };
 
 struct BoardSolver {
    Trie *node;
-   WordHashTable *found;
    PointTree *visited;
 };
 
@@ -38,35 +37,35 @@ void considerNode(Board *b, BoardSolver bs, int row, int col)
    
    child = TrieGetChild(bs.node, b->letters[row][col]);
    
+   if (!child) return;
    
-   if (child) {
-      if (child->terminates && !WordHashTableContains(bs.found, child)) {
-         b->score += child->score;
-         b->wordCount++;
-         WordHashTableAdd(bs.found, child);
-      }
-      bs.node = child;
-      PointTreeAdd(&bs.visited, row, col);
-      
-      if (row > 0) {
-         if (col > 0)
-            considerNode(b, bs, row - 1, col - 1);
-         if (col < COLS - 1)
-            considerNode(b, bs, row - 1, col + 1);
-         considerNode(b, bs, row - 1, col);
-      }
-      if (row < ROWS - 1) {
-         if (col > 0)
-            considerNode(b, bs, row + 1, col - 1);
-         if (col < COLS - 1)
-            considerNode(b, bs, row + 1, col + 1);
-         considerNode(b, bs, row + 1, col);
-      }
-      if (col > 0)
-         considerNode(b, bs, row, col - 1);
-      if (col < COLS - 1)
-         considerNode(b, bs, row, col + 1);
+   if (child->terminates && child->foundInBoard != b->id) {
+      b->score += child->score;
+      b->wordCount++;
+      child->foundInBoard = b->id;
    }
+   
+   bs.node = child;
+   PointTreeAdd(&bs.visited, row, col);
+   
+   if (row > 0) {
+      if (col > 0)
+         considerNode(b, bs, row - 1, col - 1);
+      if (col < COLS - 1)
+         considerNode(b, bs, row - 1, col + 1);
+      considerNode(b, bs, row - 1, col);
+   }
+   if (row < ROWS - 1) {
+      if (col > 0)
+         considerNode(b, bs, row + 1, col - 1);
+      if (col < COLS - 1)
+         considerNode(b, bs, row + 1, col + 1);
+      considerNode(b, bs, row + 1, col);
+   }
+   if (col > 0)
+      considerNode(b, bs, row, col - 1);
+   if (col < COLS - 1)
+      considerNode(b, bs, row, col + 1);
 }
 
 void solveBoard(Board *b, BoardSolver *bs)
@@ -79,15 +78,13 @@ void solveBoard(Board *b, BoardSolver *bs)
    
    PointTreeRecycle(bs->visited);
    bs->visited = PointTreeInit();
-   WordHashTableClear(bs->found);
 }
 
-BoardSolver *BoardSolverInit(Trie *trie, int wordCapacity)
+BoardSolver *BoardSolverInit(Trie *trie)
 {
    BoardSolver *bs = malloc(sizeof(BoardSolver));
    
    bs->node = trie;
-   bs->found = WordHashTableInit(wordCapacity);
    bs->visited = PointTreeInit();
    
    return bs;
@@ -95,7 +92,6 @@ BoardSolver *BoardSolverInit(Trie *trie, int wordCapacity)
 
 void BoardSolverDestroy(BoardSolver *bs)
 {
-   WordHashTableDestroy(bs->found);
    PointTreeDestroy(bs->visited);
    free(bs);
 }
@@ -120,6 +116,7 @@ Board *BoardScan(BoardSolver *bs)
 
 Board *BoardFromLetters(BoardSolver *bs, char *letters)
 {
+   static unsigned int id = 1;
    int row, col;
    Board *b = malloc(sizeof(Board));
    
@@ -127,6 +124,7 @@ Board *BoardFromLetters(BoardSolver *bs, char *letters)
       for (col = 0; col < COLS; col++)
          b->letters[row][col] = letters[row * COLS + col];
    
+   b->id = id++;
    solveBoard(b, bs);
    return b;
 }

@@ -3,6 +3,7 @@ typedef struct Trie {
    int terminates;
    int score;
    int childCount;
+   unsigned int foundInBoard;
    struct Trie *children;
 } Trie;
 

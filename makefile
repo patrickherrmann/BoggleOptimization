@@ -1,9 +1,9 @@
 CC = gcc
 OPTS = -O3
 
-MASS_SOLVER_DEPS = Board.o WordHashTable.o PointTree.o Trie.o
+MASS_SOLVER_DEPS = Board.o PointTree.o Trie.o
 WORD_LIST_ENCODER_DEPS = Trie.o
-SINGLE_SOLVER_DEPS = Board.o WordHashTable.o PointTree.o Trie.o
+SINGLE_SOLVER_DEPS = Board.o PointTree.o Trie.o
 
 all: MassSolver WordListEncoder SingleSolver
 

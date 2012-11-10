@@ -4,7 +4,7 @@
 int main(int argc, char **argv)
 {
    Board *board;
-   BoardSolver *bs = BoardSolverInit(TrieScanWordCode(&WordScore), 1500);
+   BoardSolver *bs = BoardSolverInit(TrieScanWordCode(&WordScore));
    
    if (argc == 1) {
       board = BoardRandom(bs);
