@@ -3,19 +3,44 @@
 #include "Board.h"
 #include "PointTree.h"
 
-struct Board {
+struct Board
+{
    char letters[ROWS][COLS];
    int wordCount;
    int score;
    unsigned int id;
+   Board *next;
 };
 
-struct BoardSolver {
+struct BoardSolver
+{
    Trie *node;
    PointTree *visited;
 };
 
-int WordScore(int wordLength) {
+static Board *freeList = NULL;
+
+static Board *newBoard()
+{
+   Board *new;
+   
+   if (freeList) {
+      new = freeList;
+      freeList = new->next;
+   } else {
+      new = malloc(sizeof(Board));
+   }
+   return new;
+}
+
+static void freeBoard(Board *b)
+{
+   b->next = freeList;
+   freeList = b;
+}
+
+int WordScore(int wordLength)
+{
    switch (wordLength) {
       case 0:
       case 1:
@@ -118,7 +143,7 @@ Board *BoardFromLetters(BoardSolver *bs, char *letters)
 {
    static unsigned int id = 1;
    int row, col;
-   Board *b = malloc(sizeof(Board));
+   Board *b = newBoard();
    
    for (row = 0; row < ROWS; row++)
       for (col = 0; col < COLS; col++)
@@ -149,4 +174,20 @@ int BoardWordCount(Board *board)
 int BoardScore(Board *board)
 {
    return board->score;
+}
+
+void BoardRecycle(Board *board)
+{
+   freeBoard(board);
+}
+
+void BoardDestroyAll()
+{
+   Board *temp;
+   
+   while (freeList) {
+      temp = freeList->next;
+      free(freeList);
+      freeList = temp;
+   }
 }

@@ -24,3 +24,7 @@ void BoardPrint(Board *board);
 int BoardWordCount(Board *board);
 
 int BoardScore(Board *board);
+
+void BoardRecycle(Board *board);
+
+void BoardDestroyAll();

@@ -13,6 +13,7 @@ int main()
    
    for (i = 0; i < 1000000; i++) {
       board = BoardRandom(bs);
+      BoardRecycle(board);
    }
    
    TrieDestroy(trie);
