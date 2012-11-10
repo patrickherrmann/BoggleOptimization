@@ -100,7 +100,12 @@ void TriePrintWordList(Trie *trie)
    printString(trie, "");
 }
 
-void TriePrintWordCode(Trie *trie)
+void printAsCharacters(char letter, char childCount)
+{
+   printf("%c%c", letter, '@' + childCount);
+}
+
+void encode(Trie *trie, void (*sink)(char, char))
 {
    int i;
    char letter = trie->letter;
@@ -108,12 +113,15 @@ void TriePrintWordCode(Trie *trie)
    if (trie->terminates)
       letter = toupper(letter);
    
-   printf("%c%c", letter, '@' + trie->childCount);
+   sink(letter, trie->childCount);
    
    for (i = 0; i < trie->childCount; i++)
-      TriePrintWordCode(trie->children + i);
-   
-   
+      encode(trie->children + i, sink);
+}
+
+void TriePrintWordCode(Trie *trie)
+{
+   encode(trie, &printAsCharacters);
 }
 
 void destroyNode(Trie *node)

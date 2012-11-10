@@ -1,7 +1,7 @@
 #include "Trie.h"
 
-#define ROWS 4
-#define COLS 4
+#define ROWS 100
+#define COLS 100
 
 typedef struct Board Board;
 
