@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "Trie.h"
 
-#define MAX_WORD_STDIN 20
+#define MAX_WORD_STDIN 50
 
 void addString(Trie *node, char *string)
 {
