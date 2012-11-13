@@ -1,7 +1,7 @@
 #include "Trie.h"
 
-#define ROWS 100
-#define COLS 100
+#define ROWS 4
+#define COLS 4
 
 typedef struct Board Board;
 
@@ -19,7 +19,13 @@ Board *BoardScan(BoardSolver *bs);
 
 Board *BoardFromLetters(BoardSolver *bs, char *letters);
 
+Board *BoardMutate(BoardSolver *bs, Board *board);
+
+Board *BoardCopy(Board *board);
+
 void BoardPrint(Board *board);
+
+void BoardPrintWithStats(Board *board);
 
 int BoardWordCount(Board *board);
 

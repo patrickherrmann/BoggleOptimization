@@ -1,14 +1,17 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "Board.h"
 #include "PointTree.h"
+
+#define ALPHABET_SIZE 26
 
 struct Board
 {
    char letters[ROWS][COLS];
    int wordCount;
    int score;
-   unsigned int id;
+   unsigned long id;
    Board *next;
 };
 
@@ -30,6 +33,9 @@ static Board *newBoard()
    } else {
       new = malloc(sizeof(Board));
    }
+   new->score = 0;
+   new->wordCount = 0;
+   
    return new;
 }
 
@@ -127,7 +133,7 @@ Board *BoardRandom(BoardSolver *bs)
    int i = 0;
    
    while (i < ROWS * COLS)
-      letters[i++] = 'a' + rand() % 26;
+      letters[i++] = 'a' + rand() % ALPHABET_SIZE;
    
    return BoardFromLetters(bs, letters);
 }
@@ -141,7 +147,7 @@ Board *BoardScan(BoardSolver *bs)
 
 Board *BoardFromLetters(BoardSolver *bs, char *letters)
 {
-   static unsigned int id = 1;
+   static unsigned long id = 1;
    int row, col;
    Board *b = newBoard();
    
@@ -154,6 +160,31 @@ Board *BoardFromLetters(BoardSolver *bs, char *letters)
    return b;
 }
 
+Board *BoardMutate(BoardSolver *bs, Board *board)
+{
+   int row, col, i = 0;
+   char letters[ROWS * COLS];
+   
+   for (row = 0; row < ROWS; row++) {
+      for (col = 0; col < COLS; col++) {
+         if (rand() % (ROWS * COLS) == 0) {
+            letters[i++] = 'a' + rand() % ALPHABET_SIZE;
+         } else {
+            letters[i++] = board->letters[row][col];
+         }
+      }
+   }
+   
+   return BoardFromLetters(bs, letters);
+}
+
+Board *BoardCopy(Board *board)
+{
+   Board *copy = newBoard();
+   memcpy(copy, board, sizeof(Board));
+   return copy;
+}
+
 void BoardPrint(Board *board)
 {
    int row, col;
@@ -164,6 +195,12 @@ void BoardPrint(Board *board)
       }
       printf("\n");
    }
+}
+
+void BoardPrintWithStats(Board *board)
+{
+   BoardPrint(board);
+   printf("Words: %d\nScore: %d\n", board->wordCount, board->score);
 }
 
 int BoardWordCount(Board *board)
