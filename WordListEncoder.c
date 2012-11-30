@@ -2,7 +2,7 @@
 
 int main()
 {
-   TriePrintWordCode(TrieScanWordList());
+   TriePrintWordCode(TrieScanWordList(stdin));
    
    return 0;
 }

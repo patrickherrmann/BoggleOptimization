@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 typedef struct Trie {
    char letter;
    int terminates;
@@ -7,9 +9,9 @@ typedef struct Trie {
    struct Trie *children;
 } Trie;
 
-Trie *TrieScanWordList();
+Trie *TrieScanWordList(FILE *in);
 
-Trie *TrieScanWordCode(int WordScore(int wordLength));
+Trie *TrieScanWordCode(FILE *in, int WordScore(int wordLength));
 
 void TriePrintWordList(Trie *trie);
 

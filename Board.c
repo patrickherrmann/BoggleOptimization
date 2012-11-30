@@ -138,10 +138,10 @@ Board *BoardRandom(BoardSolver *bs)
    return BoardFromLetters(bs, letters);
 }
 
-Board *BoardScan(BoardSolver *bs)
+Board *BoardScan(FILE *in, BoardSolver *bs)
 {
    char letters[ROWS * COLS];
-   scanf("%s", letters);
+   fscanf(in, "%s", letters);
    return BoardFromLetters(bs, letters);
 }
 

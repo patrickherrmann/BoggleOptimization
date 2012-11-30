@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "Trie.h"
 
-#define MAX_WORD_STDIN 50
+#define MAX_WORD_IN 50
 
 void addString(Trie *node, char *string)
 {
@@ -16,9 +16,8 @@ void addString(Trie *node, char *string)
       letter = tolower(*string);
       while (!childExists && i < node->childCount) {
          child = node->children + i++;
-         if (child->letter == letter) {
+         if (child->letter == letter)
             childExists = 1;
-         }
       }
       if (!childExists) {
          node->children = 
@@ -34,24 +33,24 @@ void addString(Trie *node, char *string)
    }
 }
 
-Trie *TrieScanWordList()
+Trie *TrieScanWordList(FILE *in)
 {
-   char in[MAX_WORD_STDIN];
+   char word[MAX_WORD_IN];
    Trie *root = calloc(sizeof(Trie), 1);
    root->letter = '~';
    
-   while (scanf("%s", in) != EOF)
-      addString(root, in);
+   while (fscanf(in, "%s", word) != EOF)
+      addString(root, word);
    
    return root;
 }
 
-void readCode(Trie *node, int level, int (*wordScore)(int))
+void readCode(FILE *in, Trie *node, int level, int (*wordScore)(int))
 {
    char letter, childCount;
    int i;
    
-   scanf("%c%c", &letter, &childCount);
+   fscanf(in, "%c%c", &letter, &childCount);
    childCount -= '@';
    
    if (isupper(letter)) {
@@ -67,13 +66,13 @@ void readCode(Trie *node, int level, int (*wordScore)(int))
       node->children = calloc(sizeof(Trie), childCount);
    
    for (i = 0; i < childCount; i++)
-      readCode(node->children + i, level + 1, wordScore);
+      readCode(in, node->children + i, level + 1, wordScore);
 }
 
-Trie *TrieScanWordCode(int (*wordScore)(int))
+Trie *TrieScanWordCode(FILE *in, int (*wordScore)(int))
 {
    Trie *root = calloc(sizeof(Trie), 1);
-   readCode(root, 0, wordScore);
+   readCode(in, root, 0, wordScore);
    return root;
 }
 

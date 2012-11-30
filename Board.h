@@ -15,7 +15,7 @@ void BoardSolverDestroy(BoardSolver *bs);
 
 Board *BoardRandom(BoardSolver *bs);
 
-Board *BoardScan(BoardSolver *bs);
+Board *BoardScan(FILE *in, BoardSolver *bs);
 
 Board *BoardFromLetters(BoardSolver *bs, char *letters);
 
