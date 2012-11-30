@@ -1,7 +1,9 @@
 *.out
 *.o
+*~
 
 #Executables
 MassSolver
 SingleSolver
 WordListEncoder
+BogSimAn
