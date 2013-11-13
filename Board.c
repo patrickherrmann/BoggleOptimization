@@ -4,7 +4,8 @@
 #include "Board.h"
 #include "PointTree.h"
 
-#define ALPHABET_SIZE 26
+#define ALPHABET_SIZE 14
+static char *alphabet = "acdegilmnoprst";
 
 struct Board
 {
@@ -133,7 +134,7 @@ Board *BoardRandom(BoardSolver *bs)
    int i = 0;
    
    while (i < ROWS * COLS)
-      letters[i++] = 'a' + rand() % ALPHABET_SIZE;
+      letters[i++] = alphabet[rand() % ALPHABET_SIZE];
    
    return BoardFromLetters(bs, letters);
 }
@@ -161,7 +162,7 @@ Board *BoardMutate(BoardSolver *bs, Board *board)
    for (row = 0; row < ROWS; row++) {
       for (col = 0; col < COLS; col++) {
          if (rand() % (ROWS * COLS) == 0) {
-            letters[i++] = 'a' + rand() % ALPHABET_SIZE;
+            letters[i++] = alphabet[rand() % ALPHABET_SIZE];
          } else {
             letters[i++] = board->letters[row][col];
          }

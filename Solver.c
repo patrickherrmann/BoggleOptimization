@@ -16,7 +16,7 @@ int main(int argc, char **argv)
    
    while ((flag = getopt(argc, argv, "l:c:")) != -1) {
       switch (flag) {
-         case 'l': 
+         case 'l':
             letters = optarg;
             break;
          case 'c':
