@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "Board.h"
 
 int main()
 {
-   Trie *trie = TrieScanWordCode(&WordScore);
+   Trie *trie = TrieScanWordCode(stdin, &WordScore);
    BoardSolver *bs = BoardSolverInit(trie);
    Board *board;
    int i;

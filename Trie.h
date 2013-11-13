@@ -1,3 +1,8 @@
+#ifndef TRIE_H
+#define TRIE_H
+
+#include <stdio.h>
+
 typedef struct Trie {
    char letter;
    int terminates;
@@ -7,14 +12,16 @@ typedef struct Trie {
    struct Trie *children;
 } Trie;
 
-Trie *TrieScanWordList();
+Trie *TrieScanWordList(FILE *stream);
 
-Trie *TrieScanWordCode(int WordScore(int wordLength));
+Trie *TrieScanWordCode(FILE *stream, int WordScore(int wordLength));
 
-void TriePrintWordList(Trie *trie);
+void TriePrintWordList(FILE *stream, Trie *trie);
 
-void TriePrintWordCode(Trie *trie);
+void TriePrintWordCode(FILE *stream, Trie *trie);
 
 void TrieDestroy(Trie *trie);
 
 Trie *TrieGetChild(Trie *trie, char letter);
+
+#endif

@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include "Trie.h"
@@ -34,24 +33,28 @@ void addString(Trie *node, char *string)
    }
 }
 
-Trie *TrieScanWordList()
+Trie *TrieScanWordList(FILE *stream)
 {
    char in[MAX_WORD_STDIN];
    Trie *root = calloc(sizeof(Trie), 1);
    root->letter = '~';
    
-   while (scanf("%s", in) != EOF)
+   while (fscanf(stream, "%s", in) != EOF)
       addString(root, in);
    
    return root;
 }
 
-void readCode(Trie *node, int level, int (*wordScore)(int))
+void readCode(FILE *stream, Trie *node, int level, int (*wordScore)(int))
 {
    char letter, childCount;
    int i;
    
-   scanf("%c%c", &letter, &childCount);
+   if (fscanf(stream, "%c%c", &letter, &childCount) < 2) {
+      fprintf(stderr, "Invalid word code syntax");
+      exit(1);
+   }
+   
    childCount -= '@';
    
    if (isupper(letter)) {
@@ -67,17 +70,17 @@ void readCode(Trie *node, int level, int (*wordScore)(int))
       node->children = calloc(sizeof(Trie), childCount);
    
    for (i = 0; i < childCount; i++)
-      readCode(node->children + i, level + 1, wordScore);
+      readCode(stream, node->children + i, level + 1, wordScore);
 }
 
-Trie *TrieScanWordCode(int (*wordScore)(int))
+Trie *TrieScanWordCode(FILE *stream, int (*wordScore)(int))
 {
    Trie *root = calloc(sizeof(Trie), 1);
-   readCode(root, 0, wordScore);
+   readCode(stream, root, 0, wordScore);
    return root;
 }
 
-void printString(Trie *node, char *prefix)
+void printString(FILE *stream, Trie *node, char *prefix)
 {
    int prefixLen = strlen(prefix), i;
    char *fragment = malloc(prefixLen + 2);
@@ -87,25 +90,25 @@ void printString(Trie *node, char *prefix)
    fragment[prefixLen + 1] = '\0';
    
    if (node->terminates)
-      printf("%s\n", fragment + 1);
+      fprintf(stream, "%s\n", fragment + 1);
    
    for (i = 0; i < node->childCount; i++)
-      printString(node->children + i, fragment);
+      printString(stream, node->children + i, fragment);
    
    free(fragment);
 }
 
-void TriePrintWordList(Trie *trie)
+void TriePrintWordList(FILE *stream, Trie *trie)
 {
-   printString(trie, "");
+   printString(stream, trie, "");
 }
 
-void printAsCharacters(char letter, char childCount)
+void printAsCharacters(FILE *stream, char letter, char childCount)
 {
-   printf("%c%c", letter, '@' + childCount);
+   fprintf(stream, "%c%c", letter, '@' + childCount);
 }
 
-void encode(Trie *trie, void (*sink)(char, char))
+void encode(FILE *stream, Trie *trie, void (*sink)(FILE *, char, char))
 {
    int i;
    char letter = trie->letter;
@@ -113,15 +116,15 @@ void encode(Trie *trie, void (*sink)(char, char))
    if (trie->terminates)
       letter = toupper(letter);
    
-   sink(letter, trie->childCount);
+   sink(stream, letter, trie->childCount);
    
    for (i = 0; i < trie->childCount; i++)
-      encode(trie->children + i, sink);
+      encode(stream, trie->children + i, sink);
 }
 
-void TriePrintWordCode(Trie *trie)
+void TriePrintWordCode(FILE *stream, Trie *trie)
 {
-   encode(trie, &printAsCharacters);
+   encode(stream, trie, &printAsCharacters);
 }
 
 void destroyNode(Trie *node)

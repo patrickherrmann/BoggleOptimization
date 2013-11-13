@@ -1,3 +1,6 @@
+#ifndef SIM_AN_H
+#define SIM_AN_H
+
 typedef int (*Score)(void *);
 
 typedef void *(*Neighbor)(void *, void *config);
@@ -13,3 +16,5 @@ typedef struct SimAn {
 } SimAn;
 
 void SimAnAdvance(SimAn *simAn);
+
+#endif
