@@ -40,7 +40,7 @@ int main()
       if (ScoreBoard(simAn.state) > ScoreBoard(best)) {
          BoardRecycle(best);
          best = BoardCopy(simAn.state);
-         BoardPrintWithStats(best);
+         BoardPrintWithStats(stdout, best);
       }
    }
 }

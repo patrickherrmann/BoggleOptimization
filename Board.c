@@ -138,13 +138,6 @@ Board *BoardRandom(BoardSolver *bs)
    return BoardFromLetters(bs, letters);
 }
 
-Board *BoardScan(FILE *in, BoardSolver *bs)
-{
-   char letters[ROWS * COLS];
-   fscanf(in, "%s", letters);
-   return BoardFromLetters(bs, letters);
-}
-
 Board *BoardFromLetters(BoardSolver *bs, char *letters)
 {
    static unsigned long id = 1;
@@ -185,22 +178,22 @@ Board *BoardCopy(Board *board)
    return copy;
 }
 
-void BoardPrint(Board *board)
+void BoardPrint(FILE *stream, Board *board)
 {
    int row, col;
    
    for (row = 0; row < ROWS; row++) {
       for (col = 0; col < COLS; col++) {
-         printf("%c ", board->letters[row][col]);
+         fprintf(stream, "%c ", board->letters[row][col]);
       }
-      printf("\n");
+      fprintf(stream, "\n");
    }
 }
 
-void BoardPrintWithStats(Board *board)
+void BoardPrintWithStats(FILE *stream, Board *board)
 {
-   BoardPrint(board);
-   printf("Words: %d\nScore: %d\n", board->wordCount, board->score);
+   BoardPrint(stream, board);
+   fprintf(stream, "Words: %d\nScore: %d\n", board->wordCount, board->score);
 }
 
 int BoardWordCount(Board *board)
