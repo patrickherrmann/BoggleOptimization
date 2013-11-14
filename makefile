@@ -4,12 +4,12 @@ OPTS = -O3 -Wall -Werror -pedantic
 MASS_SOLVER_DEPS = Board.o PointTree.o Trie.o
 WORD_LIST_ENCODER_DEPS = Trie.o
 SOLVER_DEPS = Board.o PointTree.o Trie.o
-BOG_SIM_AN_DEPS = Board.o PointTree.o Trie.o
+SIM_AN_DEPS = Board.o PointTree.o Trie.o
 
-all: MassSolver WordListEncoder Solver BogSimAn
+all: MassSolver WordListEncoder Solver SimAn
 
-BogSimAn: BogSimAn.c $(BOG_SIM_AN_DEPS)
-	$(CC) $(OTPS) $? -lm -o BogSimAn
+SimAn: SimAn.c $(SIM_AN_DEPS)
+	$(CC) $(OTPS) $? -lm -o SimAn
 
 Solver: Solver.c $(SOLVER_DEPS)
 	$(CC) $(OTPS) $? -o Solver
@@ -24,6 +24,6 @@ MassSolver: MassSolver.c $(MASS_SOLVER_DEPS)
 	$(CC) $(OPTS) -c $<
 	
 clean:
-	rm *.o MassSolver WordListEncoder Solver BogSimAn
+	rm *.o MassSolver WordListEncoder Solver SimAn
 	
 again: clean all
