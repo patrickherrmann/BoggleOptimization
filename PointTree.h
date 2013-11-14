@@ -7,7 +7,7 @@ PointTree *PointTreeInit();
 
 void PointTreeRecycle(PointTree *tree);
 
-void PointTreeDestroy(PointTree *tree);
+void PointTreeGarbageCollect();
 
 void PointTreeAdd(PointTree **tree, int row, int col);
 

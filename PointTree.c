@@ -54,7 +54,7 @@ void PointTreeRecycle(PointTree *tree)
    }
 }
 
-void PointTreeDestroy(PointTree *tree)
+void PointTreeGarbageCollect()
 {
    PointTree *temp;
    

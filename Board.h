@@ -34,6 +34,6 @@ int BoardScore(Board *board);
 
 void BoardRecycle(Board *board);
 
-void BoardDestroyAll();
+void BoardGarbageCollect();
 
 #endif

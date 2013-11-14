@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include "Board.h"
+#include "Trie.h"
 
 int main(int argc, char **argv)
 {
@@ -12,6 +13,7 @@ int main(int argc, char **argv)
    FILE *wordCodeStream = stdin;
    
    Board *board;
+   Trie *trie;
    BoardSolver *bs;
    
    while ((flag = getopt(argc, argv, "l:c:")) != -1) {
@@ -34,7 +36,8 @@ int main(int argc, char **argv)
       }
    }
    
-   bs = BoardSolverInit(TrieScanWordCode(wordCodeStream, &WordScore));
+   trie = TrieScanWordCode(wordCodeStream, &WordScore);
+   bs = BoardSolverInit(trie);
    
    if (letters == NULL) {
       srand(time(NULL));
@@ -46,5 +49,14 @@ int main(int argc, char **argv)
    BoardPrint(stdout, board);
    printf("Words: %d\nScore: %d\n", BoardWordCount(board), BoardScore(board));
    
+   BoardRecycle(board);
+   BoardGarbageCollect();
+   TrieDestroy(trie);
+   BoardSolverDestroy(bs);
    
+   if (wordCodeStream != NULL) {
+      fclose(wordCodeStream);
+   }
+   
+   return 0;
 }

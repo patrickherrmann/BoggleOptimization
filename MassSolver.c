@@ -17,6 +17,7 @@ int main()
       BoardRecycle(board);
    }
    
+   BoardGarbageCollect();
    TrieDestroy(trie);
    BoardSolverDestroy(bs);
    

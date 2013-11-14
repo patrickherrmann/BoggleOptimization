@@ -124,7 +124,8 @@ BoardSolver *BoardSolverInit(Trie *trie)
 
 void BoardSolverDestroy(BoardSolver *bs)
 {
-   PointTreeDestroy(bs->visited);
+   PointTreeRecycle(bs->visited);
+   PointTreeGarbageCollect();
    free(bs);
 }
 
@@ -212,7 +213,7 @@ void BoardRecycle(Board *board)
    freeBoard(board);
 }
 
-void BoardDestroyAll()
+void BoardGarbageCollect()
 {
    Board *temp;
    
