@@ -18,6 +18,8 @@ Trie *TrieScanWordCode(FILE *stream, int WordScore(int wordLength));
 
 void TriePrintWordList(FILE *stream, Trie *trie);
 
+void TriePrintFoundWords(FILE *stream, Trie *trie, unsigned long bid);
+
 void TriePrintWordCode(FILE *stream, Trie *trie);
 
 void TrieDestroy(Trie *trie);

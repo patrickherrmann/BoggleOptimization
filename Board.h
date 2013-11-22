@@ -29,6 +29,8 @@ void BoardPrint(FILE *stream, Board *board);
 
 void BoardPrintWithStats(FILE *stream, Board *board);
 
+void BoardPrintFoundWords(FILE *stream, Board *board, Trie *trie);
+
 int BoardWordCount(Board *board);
 
 int BoardScore(Board *board);

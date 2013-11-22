@@ -201,6 +201,11 @@ void BoardPrintWithStats(FILE *stream, Board *board)
    fprintf(stream, "Words: %d\nScore: %d\n", board->wordCount, board->score);
 }
 
+void BoardPrintFoundWords(FILE *stream, Board *board, Trie *trie)
+{
+   TriePrintFoundWords(stream, trie, board->id);
+}
+
 int BoardWordCount(Board *board)
 {
    return board->wordCount;

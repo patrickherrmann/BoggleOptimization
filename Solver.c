@@ -58,7 +58,7 @@ int main(int argc, char **argv)
    printf("Words: %d\nScore: %d\n", BoardWordCount(board), BoardScore(board));
    
    if (printFoundWords) {
-      printf("TODO again...\n");
+      BoardPrintFoundWords(stdout, board, trie);
    }
    
    BoardRecycle(board);
