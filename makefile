@@ -17,15 +17,9 @@ WordListEncoder: WordListEncoder.c $(OBJS)
 MassSolver: MassSolver.c $(OBJS)
 	$(CC) $(OPTS) $^ -o MassSolver
 
-Board.o: Board.h Board.c
-	$(CC) $(OPTS) -c Board.c
+%.o: %.c
+	$(CC) $(OPTS) -c $<
 
-Trie.o: Trie.h Trie.c
-	$(CC) $(OPTS) -c Trie.c
-
-PointTree.o: PointTree.h PointTree.c
-	$(CC) $(OPTS) -c PointTree.c
-	
 clean:
 	rm *.o MassSolver WordListEncoder Solver SimAn
 	
