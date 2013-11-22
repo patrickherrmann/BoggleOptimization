@@ -26,6 +26,7 @@ void addString(Trie *node, char *string)
          child->letter = letter;
          child->childCount = 0;
          child->children = NULL;
+         child->terminates = 0;
       }
       addString(child, string + 1);
    } else {
@@ -80,6 +81,25 @@ Trie *TrieScanWordCode(FILE *stream, int (*wordScore)(int))
    return root;
 }
 
+void printFoundString(FILE *stream, Trie *node, char *prefix, unsigned long id)
+{
+   int prefixLen = strlen(prefix), i;
+   char *fragment = malloc(prefixLen + 2);
+   
+   strcpy(fragment, prefix);
+   fragment[prefixLen] = node->letter;
+   fragment[prefixLen + 1] = '\0';
+   
+   if (node->terminates && node->foundInBoard == id)
+      fprintf(stream, "%s\n", fragment + 1);
+   
+   if (!node->terminates || node->foundInBoard == id)
+      for (i = 0; i < node->childCount; i++)
+         printFoundString(stream, node->children + i, fragment, id);
+   
+   free(fragment);
+}
+
 void printString(FILE *stream, Trie *node, char *prefix)
 {
    int prefixLen = strlen(prefix), i;
@@ -103,12 +123,12 @@ void TriePrintWordList(FILE *stream, Trie *trie)
    printString(stream, trie, "");
 }
 
-void printAsCharacters(FILE *stream, char letter, char childCount)
+void TriePrintFoundWords(FILE *stream, Trie *trie, unsigned long bid)
 {
-   fprintf(stream, "%c%c", letter, '@' + childCount);
+   printFoundString(stream, trie, "",  bid);
 }
 
-void encode(FILE *stream, Trie *trie, void (*sink)(FILE *, char, char))
+void encode(FILE *stream, Trie *trie)
 {
    int i;
    char letter = trie->letter;
@@ -116,15 +136,15 @@ void encode(FILE *stream, Trie *trie, void (*sink)(FILE *, char, char))
    if (trie->terminates)
       letter = toupper(letter);
    
-   sink(stream, letter, trie->childCount);
+   fprintf(stream, "%c%c", letter, '@' + trie->childCount);
    
    for (i = 0; i < trie->childCount; i++)
-      encode(stream, trie->children + i, sink);
+      encode(stream, trie->children + i);
 }
 
 void TriePrintWordCode(FILE *stream, Trie *trie)
 {
-   encode(stream, trie, &printAsCharacters);
+   encode(stream, trie);
 }
 
 void destroyNode(Trie *node)

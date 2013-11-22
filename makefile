@@ -2,7 +2,7 @@ CC = gcc
 OPTS = -O3 -Wall -Werror -pedantic
 
 MASS_SOLVER_DEPS = Board.o PointTree.o Trie.o
-WORD_LIST_ENCODER_DEPS = Trie.o
+WORD_LIST_ENCODER_DEPS = Trie.o Board.o PointTree.o
 SOLVER_DEPS = Board.o PointTree.o Trie.o
 SIM_AN_DEPS = Board.o PointTree.o Trie.o
 
