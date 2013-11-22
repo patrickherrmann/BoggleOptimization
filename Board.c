@@ -162,10 +162,12 @@ Board *BoardMutate(BoardSolver *bs, Board *board)
 {
    int row, col, i = 0;
    char letters[ROWS * COLS];
+   double r;
    
    for (row = 0; row < ROWS; row++) {
       for (col = 0; col < COLS; col++) {
-         if (rand() % (ROWS * COLS) == 0) {
+         r = (double) rand() / (double) RAND_MAX;
+         if (r < MUTATION_RATE) {
             letters[i++] = bs->alphabet[rand() % bs->alphabetSize];
          } else {
             letters[i++] = board->letters[row][col];

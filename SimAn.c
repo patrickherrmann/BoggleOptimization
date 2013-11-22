@@ -4,27 +4,37 @@
 #include <math.h>
 #include "Board.h"
 
-#define MAX_STEPS 100000
+/* The algorithm will halt after solving this many boards */
+#define MAX_STEPS 1000000
+
+#define TRIMMED_ALPHABET "acdegilmnoprst"
+
+/*
+   Losing this percent of a board's score will be accepted with
+   probability 1/e. Thus a higher percentage will result in more
+   willing acceptance of worse boards. Note that this is at
+   maximum temperature; as the temperature lowers, actual probability
+   is much lower.
+*/
+#define A 0.05
 
 int accept(Board *current, Board *neighbor, double t)
 {
-   double r, p, d;
-   static int i = 1;
-   int diff = BoardScore(neighbor) - BoardScore(current);
+   double r, p;
+   int currentScore = BoardScore(current);
+   int diff = BoardScore(neighbor) - currentScore;
    
    if (diff >= 0) return 1;
    
    r = (double) rand() / (double) RAND_MAX;
-   d = exp(diff * 0.05) - 1;
-   p = 0.5 * exp(d / t);
-   if (i++ % 10000 == 0) printf("d = %d\tt = %f\tp = %f\n", diff, t, p);
+   p = exp(diff / (A * currentScore * t));
    return p > r;
 }
 
 int main()
 {
    Trie *trie = TrieScanWordCode(stdin, &WordScore);
-   BoardSolver *bs = BoardSolverInit(trie, DEFAULT_ALPHABET);
+   BoardSolver *bs = BoardSolverInit(trie, TRIMMED_ALPHABET);
    Board *best, *current, *neighbor;
    double t;
    int step = 0;
