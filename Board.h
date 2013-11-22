@@ -3,8 +3,9 @@
 
 #include "Trie.h"
 
-#define ROWS 4
-#define COLS 4
+#define ROWS 5
+#define COLS 5
+#define DEFAULT_ALPHABET "abcdefghijklmnopqrstuvwxyz"
 
 typedef struct Board Board;
 
@@ -12,7 +13,7 @@ typedef struct BoardSolver BoardSolver;
 
 int WordScore(int wordLength);
 
-BoardSolver *BoardSolverInit(Trie *trie);
+BoardSolver *BoardSolverInit(Trie *trie, char *alphabet);
 
 void BoardSolverDestroy(BoardSolver *bs);
 

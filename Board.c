@@ -4,9 +4,6 @@
 #include "Board.h"
 #include "PointTree.h"
 
-#define ALPHABET_SIZE 14
-static char *alphabet = "acdegilmnoprst";
-
 struct Board
 {
    char letters[ROWS][COLS];
@@ -20,6 +17,8 @@ struct BoardSolver
 {
    Trie *node;
    PointTree *visited;
+   char *alphabet;
+   int alphabetSize;
 };
 
 static Board *freeList = NULL;
@@ -112,12 +111,15 @@ void solveBoard(Board *b, BoardSolver *bs)
    bs->visited = PointTreeInit();
 }
 
-BoardSolver *BoardSolverInit(Trie *trie)
+BoardSolver *BoardSolverInit(Trie *trie, char *alphabet)
 {
    BoardSolver *bs = malloc(sizeof(BoardSolver));
    
    bs->node = trie;
    bs->visited = PointTreeInit();
+   bs->alphabetSize = strlen(alphabet);
+   bs->alphabet = malloc(bs->alphabetSize + 1);
+   strcpy(bs->alphabet, alphabet);
    
    return bs;
 }
@@ -126,6 +128,7 @@ void BoardSolverDestroy(BoardSolver *bs)
 {
    PointTreeRecycle(bs->visited);
    PointTreeGarbageCollect();
+   free(bs->alphabet);
    free(bs);
 }
 
@@ -135,7 +138,7 @@ Board *BoardRandom(BoardSolver *bs)
    int i = 0;
    
    while (i < ROWS * COLS)
-      letters[i++] = alphabet[rand() % ALPHABET_SIZE];
+      letters[i++] = bs->alphabet[rand() % bs->alphabetSize];
    
    return BoardFromLetters(bs, letters);
 }
@@ -163,7 +166,7 @@ Board *BoardMutate(BoardSolver *bs, Board *board)
    for (row = 0; row < ROWS; row++) {
       for (col = 0; col < COLS; col++) {
          if (rand() % (ROWS * COLS) == 0) {
-            letters[i++] = alphabet[rand() % ALPHABET_SIZE];
+            letters[i++] = bs->alphabet[rand() % bs->alphabetSize];
          } else {
             letters[i++] = board->letters[row][col];
          }

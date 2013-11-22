@@ -2,21 +2,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <time.h>
 #include "Board.h"
 #include "Trie.h"
 
 int main(int argc, char **argv)
 {
    int flag;
-   
+   int printFoundWords = 0;
    char *letters = NULL;
+   char *alphabet = DEFAULT_ALPHABET;
    FILE *wordCodeStream = stdin;
    
    Board *board;
    Trie *trie;
    BoardSolver *bs;
    
-   while ((flag = getopt(argc, argv, "l:c:")) != -1) {
+   while ((flag = getopt(argc, argv, "l:c:a:p")) != -1) {
       switch (flag) {
          case 'l':
             letters = optarg;
@@ -26,6 +28,12 @@ int main(int argc, char **argv)
             if (wordCodeStream == NULL) {
                fprintf (stderr, "Unable to open word code file \"%s\"\n", optarg);
             }
+            break;
+         case 'a':
+            alphabet = optarg;
+            break;
+         case 'p':
+            printFoundWords = 1;
             break;
          case '?':
             if (isprint (optopt)) {
@@ -37,7 +45,7 @@ int main(int argc, char **argv)
    }
    
    trie = TrieScanWordCode(wordCodeStream, &WordScore);
-   bs = BoardSolverInit(trie);
+   bs = BoardSolverInit(trie, alphabet);
    
    if (letters == NULL) {
       srand(time(NULL));
@@ -48,6 +56,10 @@ int main(int argc, char **argv)
    
    BoardPrint(stdout, board);
    printf("Words: %d\nScore: %d\n", BoardWordCount(board), BoardScore(board));
+   
+   if (printFoundWords) {
+      printf("TODO again...\n");
+   }
    
    BoardRecycle(board);
    BoardGarbageCollect();
