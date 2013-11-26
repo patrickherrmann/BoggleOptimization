@@ -178,6 +178,26 @@ Board *BoardMutate(BoardSolver *bs, Board *board)
    return BoardFromLetters(bs, letters);
 }
 
+Board *BoardBreed(BoardSolver *bs, Board *mom, Board *dad)
+{
+   int row, col, i = 0;
+   char letters[ROWS * COLS];
+   double r;
+   
+   for (row = 0; row < ROWS; row++) {
+      for (col = 0; col < COLS; col++) {
+         r = (double) rand() / (double) RAND_MAX;
+         if (r < MUTATION_RATE) {
+            letters[i++] = bs->alphabet[rand() % bs->alphabetSize];
+         } else {
+            letters[i++] = (rand() % 2 ? mom : dad)->letters[row][col];
+         }
+      }
+   }
+   
+   return BoardFromLetters(bs, letters);
+}
+
 Board *BoardCopy(Board *board)
 {
    Board *copy = newBoard();

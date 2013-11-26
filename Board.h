@@ -3,8 +3,8 @@
 
 #include "Trie.h"
 
-#define ROWS 4
-#define COLS 4
+#define ROWS 5
+#define COLS 5
 #define DEFAULT_ALPHABET "abcdefghijklmnopqrstuvwxyz"
 #define MUTATION_RATE 0.1
 
@@ -23,6 +23,8 @@ Board *BoardRandom(BoardSolver *bs);
 Board *BoardFromLetters(BoardSolver *bs, char *letters);
 
 Board *BoardMutate(BoardSolver *bs, Board *board);
+
+Board *BoardBreed(BoardSolver *bs, Board *mom, Board *dad);
 
 Board *BoardCopy(Board *board);
 

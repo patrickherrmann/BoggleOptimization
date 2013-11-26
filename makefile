@@ -3,7 +3,10 @@ OPTS = -O3 -Wall -Werror -pedantic
 
 OBJS = Board.o Trie.o PointTree.o
 
-all: MassSolver WordListEncoder Solver SimAn
+all: MassSolver WordListEncoder Solver SimAn GenAlg
+
+GenAlg: GenAlg.c $(OBJS)
+	$(CC) $(OPTS) $^ -o GenAlg
 
 SimAn: SimAn.c $(OBJS)
 	$(CC) $(OPTS) $^ -lm -o SimAn

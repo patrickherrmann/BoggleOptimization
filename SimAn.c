@@ -5,7 +5,7 @@
 #include "Board.h"
 
 /* The algorithm will halt after solving this many boards */
-#define MAX_STEPS 1000000
+#define MAX_STEPS 100000
 
 #define TRIMMED_ALPHABET "acdegilmnoprst"
 
@@ -14,7 +14,7 @@
    probability 1/e. Thus a higher percentage will result in more
    willing acceptance of worse boards. Note that this is at
    maximum temperature; as the temperature lowers, actual probability
-   is much lower.
+   of acceptance is much lower.
 */
 #define A 0.05
 
