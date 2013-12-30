@@ -3,8 +3,8 @@
 
 #include "Trie.h"
 
-#define ROWS 5
-#define COLS 5
+#define ROWS 4
+#define COLS 4
 #define DEFAULT_ALPHABET "abcdefghijklmnopqrstuvwxyz"
 #define MUTATION_RATE 0.1
 
