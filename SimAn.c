@@ -5,7 +5,7 @@
 #include "Board.h"
 
 /* The algorithm will halt after solving this many boards */
-#define MAX_STEPS 50963
+#define MAX_STEPS 100000
 
 #define TRIMMED_ALPHABET "acdegilmnoprst"
 

@@ -6,8 +6,8 @@
 #include "Board.h"
 
 #define TRIMMED_ALPHABET "acdegilmnoprst"
-#define PARAMS_POP_SIZE 20
-#define PARAMS_GENS 20
+#define PARAMS_POP_SIZE 8
+#define PARAMS_GENS 40
 #define MAX_POP_SIZE 4000
 #define MAX_SOLVES 50000
 
@@ -29,7 +29,8 @@ int compareParams(const void *p1, const void *p2)
    return ((struct GenAlgParams *) p2)->empiricalScore - ((struct GenAlgParams *) p1)->empiricalScore;
 }
 
-int performAlgorithm(BoardSolver *bs, struct GenAlgParams *params, int verbose) {
+int performAlgorithm(BoardSolver *bs, struct GenAlgParams *params, int verbose)
+{
    int i, j, gen, best = 0;
    int threshold = params->popSize * params->keepRate;
 
@@ -66,33 +67,38 @@ int performAlgorithm(BoardSolver *bs, struct GenAlgParams *params, int verbose) 
    return best;
 }
 
-void printParams(struct GenAlgParams *params) {
+void printParams(struct GenAlgParams *params)
+{
    printf("Population:\t%d\n", params->popSize);
    printf("Generations:\t%d\n", params->gens);
    printf("Mutation Rate:\t%0.2f\n", params->mutationRate);
    printf("Keep Rate:\t%0.2f\n", params->keepRate);
 }
 
-void printParamsWithScore(struct GenAlgParams *params) {
+void printParamsWithScore(struct GenAlgParams *params)
+{
    printParams(params);
    printf("Score:\t%d\n", params->empiricalScore);
 }
 
-void scoreParams(BoardSolver *bs, struct GenAlgParams *params) {
+void scoreParams(BoardSolver *bs, struct GenAlgParams *params)
+{
    int a = performAlgorithm(bs, params, 0);
    int b = performAlgorithm(bs, params, 0);
    params->empiricalScore = (a + b) / 2;
 }
 
-void randomizeParams(struct GenAlgParams *params) {
+void randomizeParams(struct GenAlgParams *params)
+{
    params->popSize = rand() % (MAX_POP_SIZE - 1) + 1;
    params->gens = (MAX_SOLVES * 2) / params->popSize;
    params->mutationRate = ((float) rand() / RAND_MAX) * 0.2;
    params->keepRate = ((float) rand() / RAND_MAX) * 0.5 + 0.1;
 }
 
-void mutateParams(struct GenAlgParams *params) {
-   params->popSize += rand() % 500;
+void mutateParams(struct GenAlgParams *params)
+{
+   params->popSize += rand() % 100;
    if (params->popSize > MAX_POP_SIZE) {
       params->popSize = MAX_POP_SIZE;
    }
@@ -101,7 +107,8 @@ void mutateParams(struct GenAlgParams *params) {
    params->keepRate *= ((float) rand() / RAND_MAX) * 0.5 + 0.75;
 }
 
-void evolveParams(BoardSolver *bs) {
+void evolveParams(BoardSolver *bs)
+{
    struct GenAlgParams *pop[PARAMS_POP_SIZE];
    int i, j, gen, best;
 
@@ -152,10 +159,10 @@ int main(int argc, char *argv[])
       evolveParams(bs);
       printf("\n");
    } else {
-      params.popSize = 1243;
-      params.gens = 80;
+      params.popSize = 2000;
+      params.gens = 128;
       params.mutationRate = 0.13;
-      params.keepRate = 0.48;
+      params.keepRate = 0.37;
 
       printParams(&params);
       printf("\n");
