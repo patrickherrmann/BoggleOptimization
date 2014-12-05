@@ -5,7 +5,7 @@
 #include "Board.h"
 
 /* The algorithm will halt after solving this many boards */
-#define MAX_STEPS 100000
+#define MAX_STEPS 50963
 
 #define TRIMMED_ALPHABET "acdegilmnoprst"
 
@@ -47,7 +47,7 @@ int main()
    while (step < MAX_STEPS) {
       t = 1 - ((double) step / (double) MAX_STEPS);
       
-      neighbor = BoardMutate(bs, current);
+      neighbor = BoardMutate(bs, current, 0.2);
       
       if (accept(current, neighbor, t)) {
          BoardRecycle(current);

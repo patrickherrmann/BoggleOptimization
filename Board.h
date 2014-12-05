@@ -6,7 +6,6 @@
 #define ROWS 4
 #define COLS 4
 #define DEFAULT_ALPHABET "abcdefghijklmnopqrstuvwxyz"
-#define MUTATION_RATE 0.1
 
 typedef struct Board Board;
 
@@ -22,9 +21,9 @@ Board *BoardRandom(BoardSolver *bs);
 
 Board *BoardFromLetters(BoardSolver *bs, char *letters);
 
-Board *BoardMutate(BoardSolver *bs, Board *board);
+Board *BoardMutate(BoardSolver *bs, Board *board, float mutationRate);
 
-Board *BoardBreed(BoardSolver *bs, Board *mom, Board *dad);
+Board *BoardBreed(BoardSolver *bs, Board *mom, Board *dad, float mutationRate);
 
 Board *BoardCopy(Board *board);
 

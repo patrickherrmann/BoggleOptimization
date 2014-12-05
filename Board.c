@@ -158,7 +158,7 @@ Board *BoardFromLetters(BoardSolver *bs, char *letters)
    return b;
 }
 
-Board *BoardMutate(BoardSolver *bs, Board *board)
+Board *BoardMutate(BoardSolver *bs, Board *board, float mutationRate)
 {
    int row, col, i = 0;
    char letters[ROWS * COLS];
@@ -167,7 +167,7 @@ Board *BoardMutate(BoardSolver *bs, Board *board)
    for (row = 0; row < ROWS; row++) {
       for (col = 0; col < COLS; col++) {
          r = (double) rand() / (double) RAND_MAX;
-         if (r < MUTATION_RATE) {
+         if (r < mutationRate) {
             letters[i++] = bs->alphabet[rand() % bs->alphabetSize];
          } else {
             letters[i++] = board->letters[row][col];
@@ -178,7 +178,7 @@ Board *BoardMutate(BoardSolver *bs, Board *board)
    return BoardFromLetters(bs, letters);
 }
 
-Board *BoardBreed(BoardSolver *bs, Board *mom, Board *dad)
+Board *BoardBreed(BoardSolver *bs, Board *mom, Board *dad, float mutationRate)
 {
    int row, col, i = 0;
    char letters[ROWS * COLS];
@@ -187,7 +187,7 @@ Board *BoardBreed(BoardSolver *bs, Board *mom, Board *dad)
    for (row = 0; row < ROWS; row++) {
       for (col = 0; col < COLS; col++) {
          r = (double) rand() / (double) RAND_MAX;
-         if (r < MUTATION_RATE) {
+         if (r < mutationRate) {
             letters[i++] = bs->alphabet[rand() % bs->alphabetSize];
          } else {
             letters[i++] = (rand() % 2 ? mom : dad)->letters[row][col];
